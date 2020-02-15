@@ -10,10 +10,18 @@ using namespace std;
 string getFileNameFromPath(string path){
   size_t found = path.find_last_of("/");
   return path.substr(found+1);
-  
 }
 
 string parseAlbum(char* argv[], int argc){
+  for(int i = 0; i < argc; i++){
+    if(string(argv[i]) == "-l"){
+      return argv[i+1];
+    }
+  }
+  return "";
+}
+
+string parseArtist(char* argv[], int argc){
   for(int i = 0; i < argc; i++){
     if(string(argv[i]) == "-a"){
       return argv[i+1];
@@ -69,9 +77,10 @@ string calculateName(string filename,string pattern){
   return trackTitle;
 }
 
-void tagFile(string filePath,string album,string titlePattern){
+void tagFile(string filePath,string album,string artist,string titlePattern){
   TagLib::FileRef f(filePath.c_str());
   f.tag()->setAlbum(album);
+  f.tag()->setArtist(artist);
   f.tag()->setTitle(calculateName(getFileNameFromPath(filePath),titlePattern));
   f.save();
 }
@@ -81,12 +90,13 @@ int main(int argc, char* argv[]){
   //The path must be a dir, where we will take every mp3 file and tag it with name, album and year
   string path = argv[1];
   string album = parseAlbum(argv, argc);
+  string artist = parseArtist(argv, argc);
   string tittlePattern = parseTitlePattern(argv, argc);
   vector<string> files = getFilesFromDir(path);
   auto i = files.begin();
   while(i != files.end()){
     if(i->find(".mp3") != string::npos){ //If file path contains .mp3
-      tagFile(*i, album, tittlePattern);
+      tagFile(*i, album, artist, tittlePattern);
     }
     ++i;
   }
