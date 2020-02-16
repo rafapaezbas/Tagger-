@@ -30,6 +30,15 @@ string parseArtist(char* argv[], int argc){
   return "";
 }
 
+string parseDir(char* argv[], int argc){
+  for(int i = 0; i < argc; i++){
+    if(string(argv[i]) == "-d"){
+      return argv[i+1];
+    }
+  }
+  return "";
+}
+
 string parseTitlePattern(char* argv[], int argc){
   for(int i = 0; i < argc; i++){
     if(string(argv[i]) == "-t"){
@@ -88,11 +97,11 @@ void tagFile(string filePath,string album,string artist,string titlePattern){
 
 int main(int argc, char* argv[]){
   //The path must be a dir, where we will take every mp3 file and tag it with name, album and year
-  string path = argv[1];
+  string dir = parseDir(argv, argc);
   string album = parseAlbum(argv, argc);
   string artist = parseArtist(argv, argc);
   string tittlePattern = parseTitlePattern(argv, argc);
-  vector<string> files = getFilesFromDir(path);
+  vector<string> files = getFilesFromDir(dir);
   auto i = files.begin();
   while(i != files.end()){
     if(i->find(".mp3") != string::npos){ //If file path contains .mp3
