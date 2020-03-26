@@ -1,16 +1,18 @@
-#include <string>
-#include <vector>
-#include <iostream>
-#include <experimental/filesystem>
-#include <taglib/fileref.h>
 #include "Help.h"
-namespace fs = std::experimental::filesystem;
-using namespace std;
+#include "Tagger.h"
+#include "Collection.h"
 
-//given a full file path, extract the filename
-string getFileNameFromPath(string path){
-  size_t found = path.find_last_of("/");
-  return path.substr(found+1);
+bool isHelp(char* argv[]){
+  return string(argv[1]) == "--help";
+}
+
+bool isCollection(char* argv[],int argc){
+  for(int i = 0; i < argc; i++){
+    if(string(argv[i]) == "-c"){
+      return true;
+    }
+  }
+  return false;
 }
 
 string parseAlbum(char* argv[], int argc){
@@ -20,11 +22,6 @@ string parseAlbum(char* argv[], int argc){
     }
   }
   return "";
-}
-
-bool isHelp(char* argv[]){
-  cout << argv[1] << endl;
-  return string(argv[1]) == "--help";
 }
 
 string parseArtist(char* argv[], int argc){
@@ -55,67 +52,12 @@ string parseTitlePattern(char* argv[], int argc){
 }
 
 
-vector<string> getFilesFromDir(string path){
-  vector<string> v;
-  for (auto entry : fs::recursive_directory_iterator(path)){
-    v.push_back(entry.path().string());
-  }
-  return v;
-}
-
-/*
-  This function is in charge of "calculating" the song title that we want in the tag. We use a pattern to determine how to derive the song title form the file name. The idea is every files name follow a pattern that includes the track name we want. We only have two special chars. -#- is the name we want, ? represents any sigle char. So foe example -01 Last of the Mohicans.mp3- and -??#.mp3-, would return -Last of the Mohicans- which is the name we want for the tag.
-*/
-string calculateName(string filename,string pattern){
-  string trackTitle = "";
-  bool match = true;
-  for ( int i=0, j=0; i < pattern.length() ; i++ && match){
-    switch(pattern[i]){
-    case '#':
-      while(pattern[i + 1] != filename[j]){
-        trackTitle += filename[j];
-        j++;
-      }
-      break;
-    case '?':
-      j++;
-      break;
-    default:
-      if(pattern[i] == filename[j]){
-        j++;
-      }else{
-        trackTitle = "";
-        match = false;
-      }
-    }
-  }
-  return trackTitle;
-}
-
-void tagFile(string filePath,string album,string artist,string titlePattern){
-  TagLib::FileRef f(filePath.c_str());
-  f.tag()->setAlbum(album);
-  f.tag()->setArtist(artist);
-  f.tag()->setTitle(calculateName(getFileNameFromPath(filePath),titlePattern));
-  f.save();
-}
-
-
 int main(int argc, char* argv[]){
+  /*
   if(isHelp){
     help::printHelp();
+    return 0;
   }
-  //The path must be a dir, where we will take every mp3 file and tag it with name, album and year
-  string dir = parseDir(argv, argc);
-  string album = parseAlbum(argv, argc);
-  string artist = parseArtist(argv, argc);
-  string tittlePattern = parseTitlePattern(argv, argc);
-  vector<string> files = getFilesFromDir(dir);
-  auto i = files.begin();
-  while(i != files.end()){
-    if(i->find(".mp3") != string::npos){ //If file path contains .mp3
-      tagFile(*i, album, artist, tittlePattern);
-    }
-    ++i;
-  }
+  */
+  createCollectionFromDir(parseDir(argv,argc));
 }
