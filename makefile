@@ -1,5 +1,5 @@
 tagger: *.cpp
-	g++ main.cpp -o tagger -std=c++17 -lstdc++fs -ltag
+	sudo g++ *.cpp -o tagger -std=c++17 -lstdc++fs -ltag
 
 
 

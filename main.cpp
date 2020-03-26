@@ -3,6 +3,7 @@
 #include <iostream>
 #include <experimental/filesystem>
 #include <taglib/fileref.h>
+#include "Help.h"
 namespace fs = std::experimental::filesystem;
 using namespace std;
 
@@ -19,6 +20,11 @@ string parseAlbum(char* argv[], int argc){
     }
   }
   return "";
+}
+
+bool isHelp(char* argv[]){
+  cout << argv[1] << endl;
+  return string(argv[1]) == "--help";
 }
 
 string parseArtist(char* argv[], int argc){
@@ -41,7 +47,7 @@ string parseDir(char* argv[], int argc){
 
 string parseTitlePattern(char* argv[], int argc){
   for(int i = 0; i < argc; i++){
-    if(string(argv[i]) == "-t"){
+    if(string(argv[i]) == "-p"){
       return argv[i+1];
     }
   }
@@ -96,6 +102,9 @@ void tagFile(string filePath,string album,string artist,string titlePattern){
 
 
 int main(int argc, char* argv[]){
+  if(isHelp){
+    help::printHelp();
+  }
   //The path must be a dir, where we will take every mp3 file and tag it with name, album and year
   string dir = parseDir(argv, argc);
   string album = parseAlbum(argv, argc);
