@@ -1,8 +1,14 @@
 #include "Tagger.h"
 
-TagLib::String getArtist(string filePath){
+Mp3Info getMp3Info(string filePath){
   TagLib::FileRef f(filePath.c_str());
-  return f.tag()->artist();
+  Mp3Info mp3Info;
+  if(!f.isNull()){
+    mp3Info.artist = f.tag()->artist().to8Bit();
+    mp3Info.album = f.tag()->album().to8Bit();
+    mp3Info.title = f.tag()->title().to8Bit();
+  }
+  return mp3Info;
 }
 
 void tagFile(string filePath,string album,string artist,string titlePattern){

@@ -1,5 +1,5 @@
-#ifndef FILEREADER_H
-#define FILEREADER_H
+#ifndef FILEMANAGER_H
+#define FILEMANAGER_H
 
 #include <experimental/filesystem>
 #include <vector>

@@ -1,4 +1,4 @@
-#include "FileReader.h"
+#include "FileManager.h"
 
 std::vector<std::string> getFilesFromDir(std::string path){
   std::vector<std::string> v;
