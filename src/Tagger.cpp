@@ -11,20 +11,23 @@ Mp3Info getMp3Info(string filePath){
   return mp3Info;
 }
 
-void tagFile(string filePath,string album,string artist,string titlePattern){
-  TagLib::FileRef f(filePath.c_str());
-  f.tag()->setAlbum(album);
-  f.tag()->setArtist(artist);
-  f.tag()->setTitle(calculateName(getFileNameFromPath(filePath),titlePattern));
+void tagFile(string path,string album,string artist,string pattern){
+  TagLib::FileRef f(path.c_str());
+  if(!album.empty())
+    f.tag()->setAlbum(album);
+  if(!artist.empty())
+    f.tag()->setArtist(artist);
+  if(!pattern.empty())
+    f.tag()->setTitle(calculateName(getFileNameFromPath(path),pattern));
   f.save();
 }
 
-void updateTracksInformation(string dir, string album, string artist, string tittlePattern){
+void tagAlbum(string dir, string tittlePattern){
   vector<string> files = getFilesFromDir(dir);
   auto i = files.begin();
   while(i != files.end()){
     if(i->find(".mp3") != string::npos){ //If file path contains .mp3
-      tagFile(*i, album, artist, tittlePattern);
+      tagFile(*i, "", "", tittlePattern);
     }
     ++i;
   }

@@ -69,7 +69,6 @@ bool isTagAlbum(int argc,char* argv[]){
   if(pattern.empty()){
     return false;
   }
-
   return true;
 }
 
