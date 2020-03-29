@@ -2,6 +2,7 @@
 #include "Tagger.h"
 #include <vector>
 #include <string>
+#include <algorithm>
 
 struct Artist;
 struct Album;
