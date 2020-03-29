@@ -6,4 +6,4 @@
 
 struct Artist;
 struct Album;
-void createCollectionFromDir(std::string path,std::string outputPath);
+void createCollection(std::string path,std::string outputPath);

@@ -13,7 +13,7 @@ std::string toJson(std::string artist, std::string album, std::string title, std
   return s;
 }
 
-void createCollectionFromDir(std::string path, std::string outputPath){
+void createCollection(std::string path, std::string outputPath){
   std::vector<std::string> files = getFilesFromDir(path);
   std::vector<std::string> collection;
   int filesSize = files.size();

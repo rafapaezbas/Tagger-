@@ -15,8 +15,9 @@ struct Mp3Info{
 };
 
 void tagFile(std::string filePath,string album,string artist,string titlePattern);
-string calculateName(string filename,string pattern);
-void tagAlbum(std::string path,std::string pattern );
+Mp3Info calculateMp3Info(string filename,string pattern);
+void tagAlbum(std::string path,std::string pattern);
+void tagCollection(std::string path,std::string pattern);
 Mp3Info getMp3Info(string path);
 
 #endif

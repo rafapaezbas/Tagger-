@@ -16,9 +16,11 @@ int main(int argc, char* argv[]){
   if(action == "HELP")
     help::printHelp();
   else if(action == "CREATE_COLLECTION")
-    createCollectionFromDir(parseArg(argv,argc,"-d"),parseArg(argv,argc,"-o"));
+    createCollection(parseArg(argv,argc,"-d"),parseArg(argv,argc,"-o"));
   else if(action == "TAG_ALBUM")
     tagAlbum(parseArg(argv,argc,"-d"),parseArg(argv,argc,"-p"));
+  else if(action == "TAG_COLLECTION")
+    tagCollection(parseArg(argv,argc,"-d"),parseArg(argv,argc,"-p"));
   else
     help::printHelp();
 }
